@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.IOException;
 
 /**
  * Created by FromxSoul on 15.07.2016.
@@ -23,6 +27,16 @@ public class UserController {
     public String homePage(ModelMap model) {
         model.addAttribute("greeting", "Hi, Welcome to mysite. ");
         return "welcome";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    public String main() {
+        return "main";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -37,13 +51,13 @@ public class UserController {
         return "dba";
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value="/logout", method = RequestMethod.POST)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "welcome";
+        return "main";
     }
 
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
